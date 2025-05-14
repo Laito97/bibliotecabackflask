@@ -5,3 +5,5 @@ class PrestamoEstado(db.Model):
 
     prestamo_estado_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     descripcion = db.Column(db.String(20))
+
+    prestamos = db.relationship('Prestamo', back_populates='prestamo_estado')

@@ -1,7 +1,5 @@
 from app.models.model_prestamo import Prestamo
 from flask import jsonify
-from app import db
-from sqlalchemy.orm import joinedload
 
 class PrestamoService:
 
@@ -32,7 +30,7 @@ class PrestamoService:
                     'fecha_devolucion_prestamo': prestamo.fecha_devolucion_prestamo.strftime('%Y-%m-%d %H:%M:%S') if prestamo.fecha_devolucion_prestamo else None,
                     'prestamo_estado': {
                         'estado_id': prestamo.prestamo_estado.prestamo_estado_id,
-                        'estado_nombre': prestamo.prestamo_estado.estado_nombre
+                        'estado_nombre': prestamo.prestamo_estado.descripcion
                     },
                     'fecha_creacion': prestamo.fecha_creacion.strftime('%Y-%m-%d %H:%M:%S'),
                     'usuario_creacion_id': prestamo.usuario_creacion_id,

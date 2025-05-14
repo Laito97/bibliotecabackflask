@@ -19,6 +19,6 @@ class Prestamo(db.Model):
     libro = db.relationship('Libro', backref='prestamos')
     usuario_solicita = db.relationship('Usuario', foreign_keys=[usuario_solicita_prestamo])
     usuario_aprueba = db.relationship('Usuario', foreign_keys=[usuario_aprueba_prestamo])
-    prestamo_estado = db.relationship('PrestamoEstado', backref='prestamos')
+    prestamo_estado = db.relationship('PrestamoEstado', back_populates='prestamos')
     usuario_creacion = db.relationship('Usuario', foreign_keys=[usuario_creacion_id])
     usuario_actualizacion = db.relationship('Usuario', foreign_keys=[usuario_actualizacion_id])

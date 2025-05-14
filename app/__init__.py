@@ -9,7 +9,7 @@ from app.routes.autor_routes import autor_bp
 from app.routes.editorial_routes import editorial_bp
 from app.routes.categoria_routes import categoria_bp
 from app.routes.libro_routes import libro_bp
-# from app.routes.prestamo_routes import prestamo_bp
+from app.routes.prestamo_routes import prestamo_bp
 
 
 jwt = JWTManager()
@@ -30,6 +30,6 @@ def create_app():
     app.register_blueprint(editorial_bp, url_prefix=prefix)
     app.register_blueprint(categoria_bp, url_prefix=prefix)
     app.register_blueprint(libro_bp, url_prefix=prefix)
-    # app.register_blueprint(prestamo_bp, url_prefix=prefix)
+    app.register_blueprint(prestamo_bp, url_prefix=prefix)
 
     return app
