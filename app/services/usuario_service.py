@@ -16,7 +16,10 @@ class UsuarioService:
                 usuarios_data.append({
                     'usuario_id': usuario.usuario_id,
                     'usuario_nombre': usuario.usu_nom,
-                    'usuario_tipo': usuario_tipo.tipo_nom if usuario_tipo else None,
+                    'usuario_tipo': {
+                        'usuario_tipo_id': usuario_tipo.usuario_tipo_id if usuario_tipo else None,
+                        'tipo_nom': usuario_tipo.tipo_nom if usuario_tipo else None,
+                    },
                     'persona': {
                         'persona_id': persona.persona_id if persona else None,
                         'nombres': persona.nombres if persona else None,
