@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from app.routes.auth_routes import auth_bp
 from app.routes.usuario_routes import usuario_bp
+from app.routes.autor_routes import autor_bp
 
 
 jwt = JWTManager()
@@ -21,5 +22,6 @@ def create_app():
 
     app.register_blueprint(auth_bp, url_prefix=prefix)
     app.register_blueprint(usuario_bp, url_prefix=prefix)
+    app.register_blueprint(autor_bp, url_prefix=prefix)
 
     return app
