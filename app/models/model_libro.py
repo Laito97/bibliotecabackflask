@@ -11,7 +11,7 @@ class Libro(db.Model):
     anio_publicacion = db.Column(db.String(4))
     edicion = db.Column(db.String(100))
     existencias = db.Column(db.Integer)
-    categoria_id = db.Column(db.Integer, db.ForeignKey('categorias.categoria_id'))
+    categoria_id = db.Column(db.Integer, db.ForeignKey('cateogrias.categoria_id'))
     editorial_id = db.Column(db.Integer, db.ForeignKey('editoriales.editorial_id'))
     autor_id = db.Column(db.Integer, db.ForeignKey('autores.autor_id'))
     fecha_creacion = db.Column(db.DateTime)
