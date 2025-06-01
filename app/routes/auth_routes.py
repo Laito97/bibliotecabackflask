@@ -3,6 +3,7 @@ from app.models.model_usuario import Usuario
 from app.database import db
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
+from werkzeug.security import check_password_hash 
 
 auth_bp = Blueprint('auth', __name__)
 main_root = '/auth'
@@ -21,20 +22,18 @@ def login():
 
     usuario = Usuario.query.filter_by(usu_nom=username).first()
 
-    if not usuario or usuario.usu_pass != password:
+    # check_password_hash para validar contraseñas hasheadas
+    if not usuario or not check_password_hash(usuario.usu_pass, password):
         return jsonify({
             'response_code': 401,
             'message': 'Credenciales inválidas'
         }), 401
 
-    # Crear token
     token = create_access_token(identity=usuario.usuario_id, expires_delta=timedelta(hours=1))
 
-    # Datos relacionados
     persona = usuario.persona
     usuario_tipo = usuario.usuario_tipo 
 
-    # Armar respuesta
     usuario_data = {
         'id': usuario.usuario_id,
         'nombre': usuario.usu_nom,
@@ -58,8 +57,3 @@ def login():
         'message': 'Login Exitoso',
         'usuario': usuario_data
     }), 200
-
-# Propuesta
-@auth_bp.route(f'{main_root}/recuperar-password', methods=['POST'])
-def recuperar_password():
-    return

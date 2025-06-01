@@ -1,5 +1,8 @@
-from app.models.model_usuario import Usuario
 from flask import jsonify
+from app.database import db
+from app.models.model_persona import Persona
+from app.models.model_usuario import Usuario
+from werkzeug.security import generate_password_hash
 
 class UsuarioService:
 
@@ -41,4 +44,63 @@ class UsuarioService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al listar usuarios: {str(e)}'
+            }), 500
+        
+    @staticmethod
+    def guardar_usuario(data):
+        try:
+            # 1. Extraer datos
+            persona_data = data.get('persona')
+            password = data.get('password')
+            usuario_tipo = data.get('usuario_tipo_id')
+
+            if not persona_data or not password or not usuario_tipo:
+                return jsonify({
+                    'response_code': 400,
+                    'message': 'Faltan datos obligatorios: persona, password o tipo de usuario.'
+                }), 400
+
+            # 2. Crear y guardar persona
+            persona = Persona(
+                nombres=persona_data.get('nombres'),
+                apellidos=persona_data.get('apellidos'),
+                num_contacto=persona_data.get('num_contacto'),
+                correo=persona_data.get('correo'),
+                dni=persona_data.get('dni'),
+                direccion=persona_data.get('direccion')
+            )
+            db.session.add(persona)
+            db.session.flush()
+
+            # 3. Generar nombre de usuario
+            usu_nom = f"{persona.nombres.strip()[0].lower()}{persona.apellidos.replace(' ', '').lower()}"
+
+            # 4. Hashear la contraseña
+            hashed_password = generate_password_hash(password)
+
+            # 5. Crear y guardar usuario
+            usuario = Usuario(
+                usu_nom=usu_nom,
+                usu_pass=hashed_password,
+                persona_id=persona.persona_id,
+                usuario_tipo_id=usuario_tipo.get('id')
+            )
+            db.session.add(usuario)
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 201,
+                'message': 'Usuario creado exitosamente',
+                'usuario': {
+                    'usuario_id': usuario.usuario_id,
+                    'usuario_nombre': usuario.usu_nom,
+                    'persona_id': persona.persona_id
+                }
+            }), 201
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al guardar usuario: {str(e)}'
             }), 500

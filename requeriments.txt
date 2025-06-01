@@ -3,3 +3,6 @@ Flask-SQLAlchemy
 Flask-JWT-Extended
 python-dotenv
 mysql-connector-python
+pandas
+scikit-learn
+joblib
