@@ -9,7 +9,7 @@ main_root = '/autores'
 def obtener_autores():
     return AutorService.listar_autores()
 
-@autor_bp.route(f'{main_root}/guardar', methods=['POST'])
+@autor_bp.route(f'{main_root}/save-update', methods=['POST'])
 def guardar_autor():
     data = request.get_json()
     return AutorService.guardar_autor(data)

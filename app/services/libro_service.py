@@ -56,38 +56,74 @@ class LibroService:
 
 
     @staticmethod
-    def crear_libro():
+    def guardar_editar_libro(data):
         try:
-            data = request.json
+            libro_id = data.get('libro_id')
+            ahora = datetime.now()
 
-            nuevo_libro = Libro(
-                isbn=data.get('isbn'),
-                url_portada=data.get('url_portada'),
-                libro_nom=data.get('libro_nom'),
-                descripcion=data.get('descripcion'),
-                anio_publicacion=data.get('anio_publicacion'),
-                edicion=data.get('edicion'),
-                existencias=data.get('existencias'),
-                categoria_id=data.get('categoria_id'),
-                editorial_id=data.get('editorial_id'),
-                autor_id=data.get('autor_id'),
-                fecha_creacion=datetime.utcnow(),
-                usuario_creacion_id=data.get('usuario_creacion_id'),
-                fecha_actualizacion=datetime.utcnow(),
-                usuario_actualizacion_id=data.get('usuario_actualizacion_id')
-            )
+            if not data.get('libro_nom') or not data.get('autor_id') or not data.get('categoria_id') or not data.get('editorial_id'):
+                return jsonify({
+                    'response_code': 400,
+                    'message': 'Faltan campos obligatorios (nombre, autor, categoría o editorial).'
+                }), 400
 
-            db.session.add(nuevo_libro)
-            db.session.commit()
+            if libro_id:
+                
+                libro = Libro.query.get(libro_id)
+                if not libro:
+                    return jsonify({
+                        'response_code': 404,
+                        'message': 'Libro no encontrado.'
+                    }), 404
 
-            return jsonify({
-                'response_code': 201,
-                'message': 'Libro creado exitosamente'
-            }), 201
+                libro.isbn = data.get('isbn')
+                libro.url_portada = data.get('url_portada')
+                libro.libro_nom = data.get('libro_nom')
+                libro.descripcion = data.get('descripcion')
+                libro.anio_publicacion = data.get('anio_publicacion')
+                libro.edicion = data.get('edicion')
+                libro.existencias = data.get('existencias')
+                libro.categoria_id = data.get('categoria_id')
+                libro.editorial_id = data.get('editorial_id')
+                libro.autor_id = data.get('autor_id')
+                libro.fecha_actualizacion = ahora
+                libro.usuario_actualizacion_id = data.get('usuario_actualizacion_id')
+
+                db.session.commit()
+
+                return jsonify({
+                    'response_code': 200,
+                    'message': 'Libro actualizado exitosamente.'
+                }), 200
+
+            else:
+                nuevo_libro = Libro(
+                    isbn=data.get('isbn'),
+                    url_portada=data.get('url_portada'),
+                    libro_nom=data.get('libro_nom'),
+                    descripcion=data.get('descripcion'),
+                    anio_publicacion=data.get('anio_publicacion'),
+                    edicion=data.get('edicion'),
+                    existencias=data.get('existencias'),
+                    categoria_id=data.get('categoria_id'),
+                    editorial_id=data.get('editorial_id'),
+                    autor_id=data.get('autor_id'),
+                    fecha_creacion=ahora,
+                    usuario_creacion_id=data.get('usuario_creacion_id')
+                )
+
+                db.session.add(nuevo_libro)
+                db.session.commit()
+
+                return jsonify({
+                    'response_code': 201,
+                    'message': 'Libro registrado exitosamente.',
+                    'libro_id': nuevo_libro.libro_id
+                }), 201
 
         except Exception as e:
             db.session.rollback()
             return jsonify({
                 'response_code': 500,
-                'message': f'Error al crear libro: {str(e)}'
+                'message': f'Error al guardar o editar libro: {str(e)}'
             }), 500
