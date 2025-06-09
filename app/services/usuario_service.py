@@ -50,7 +50,6 @@ class UsuarioService:
     @staticmethod
     def guardar_usuario(data):
         try:
-            # 1. Extraer datos
             persona_data = data.get('persona')
             password = data.get('password')
             usuario_tipo = data.get('usuario_tipo_id')
@@ -61,7 +60,6 @@ class UsuarioService:
                     'message': 'Faltan datos obligatorios: persona, password o tipo de usuario.'
                 }), 400
 
-            # 2. Crear y guardar persona
             persona = Persona(
                 nombres=persona_data.get('nombres'),
                 apellidos=persona_data.get('apellidos'),
@@ -73,13 +71,10 @@ class UsuarioService:
             db.session.add(persona)
             db.session.flush()
 
-            # 3. Generar nombre de usuario
             usu_nom = f"{persona.nombres.strip()[0].lower()}{persona.apellidos.replace(' ', '').lower()}"
 
-            # 4. Hashear la contraseña
             hashed_password = generate_password_hash(password)
 
-            # 5. Crear y guardar usuario
             usuario = Usuario(
                 usu_nom=usu_nom,
                 usu_pass=hashed_password,
