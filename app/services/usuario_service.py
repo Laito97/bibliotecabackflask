@@ -2,6 +2,7 @@ from flask import jsonify
 from app.database import db
 from app.models.model_persona import Persona
 from app.models.model_usuario import Usuario
+from app.models.model_usuario_tipo import UsuarioTipo
 from werkzeug.security import generate_password_hash
 
 class UsuarioService:
@@ -103,4 +104,31 @@ class UsuarioService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al guardar usuario: {str(e)}'
+            }), 500
+
+    @staticmethod
+    def listar_usuario_tipo():
+        try:
+            usuario_tipo = UsuarioTipo.query.all()
+            usuario_tipo_data = []
+
+            for usuariotipo in usuario_tipo:
+                usuario_tipo_id = usuariotipo.usuario_tipo_id
+                tipo_nom = usuariotipo.tipo_nom
+
+                usuario_tipo_data.append({
+                    'usuario_tipo_id': usuario_tipo_id,
+                    'tipo_nom': tipo_nom
+                })
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Usuarios listados exitosamente',
+                'usuario_tipo': usuario_tipo_data
+            }), 200
+
+        except Exception as e:
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al listar usuarios: {str(e)}'
             }), 500

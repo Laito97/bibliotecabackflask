@@ -14,3 +14,6 @@ def guardar_usuario():
     data = request.get_json()
     return UsuarioService.guardar_usuario(data)
 
+@usuario_bp.route(f'{main_root}/list-tipo', methods=['GET'])
+def obtener_usuario_tipo():
+    return UsuarioService.listar_usuario_tipo()
