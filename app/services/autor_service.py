@@ -38,7 +38,7 @@ class AutorService:
         try:
             autor_id = data.get('autor_id')
             autor_nom = data.get('autor_nom')
-            usuario_id = data.get('usuario_id')
+            usuario_id = data.get('usuario_creacion_id')
 
             if not autor_nom or not usuario_id:
                 return jsonify({
