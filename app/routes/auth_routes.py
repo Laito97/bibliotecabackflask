@@ -35,7 +35,7 @@ def login():
     usuario_tipo = usuario.usuario_tipo 
 
     usuario_data = {
-        'id': usuario.usuario_id,
+        'usuario_id': usuario.usuario_id,
         'nombre': usuario.usu_nom,
         'correo': persona.correo if persona else None,
         'usuario_tipo': {
