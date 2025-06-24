@@ -4,6 +4,7 @@ from app.models.model_persona import Persona
 from app.models.model_usuario import Usuario
 from app.models.model_usuario_tipo import UsuarioTipo
 from werkzeug.security import generate_password_hash
+from datetime import datetime
 
 class UsuarioService:
 
@@ -50,49 +51,81 @@ class UsuarioService:
     @staticmethod
     def guardar_usuario(data):
         try:
+            usuario_id = data.get('usuario_id')
             persona_data = data.get('persona')
             password = data.get('password')
             usuario_tipo = data.get('usuario_tipo_id')
+            usuario_id_modifica = data.get('usuario_modificacion_id')
 
-            if not persona_data or not password or not usuario_tipo:
+            if not persona_data or not usuario_tipo:
                 return jsonify({
                     'response_code': 400,
-                    'message': 'Faltan datos obligatorios: persona, password o tipo de usuario.'
+                    'message': 'Faltan datos obligatorios: persona o tipo de usuario.'
                 }), 400
 
-            persona = Persona(
-                nombres=persona_data.get('nombres'),
-                apellidos=persona_data.get('apellidos'),
-                num_contacto=persona_data.get('num_contacto'),
-                correo=persona_data.get('correo'),
-                dni=persona_data.get('dni'),
-                direccion=persona_data.get('direccion')
-            )
-            db.session.add(persona)
-            db.session.flush()
+            if usuario_id:
+                # EDICIÓN
+                usuario = Usuario.query.get(usuario_id)
+                if not usuario:
+                    return jsonify({'response_code': 404, 'message': 'Usuario no encontrado'}), 404
 
-            usu_nom = f"{persona.nombres.strip()[0].lower()}{persona.apellidos.replace(' ', '').lower()}"
+                persona = usuario.persona
+                persona.nombres = persona_data.get('nombres')
+                persona.apellidos = persona_data.get('apellidos')
+                persona.num_contacto = persona_data.get('num_contacto')
+                persona.correo = persona_data.get('correo')
+                persona.dni = persona_data.get('dni')
+                persona.direccion = persona_data.get('direccion')
 
-            hashed_password = generate_password_hash(password)
+                usuario.usuario_tipo_id = usuario_tipo.get('id')
 
-            usuario = Usuario(
-                usu_nom=usu_nom,
-                usu_pass=hashed_password,
-                persona_id=persona.persona_id,
-                usuario_tipo_id=usuario_tipo.get('id')
-            )
-            db.session.add(usuario)
+                if password:
+                    hashed_password = generate_password_hash(password)
+                    usuario.usu_pass = hashed_password
+
+                usuario.fecha_actualizacion = datetime.now()
+                usuario.usuario_actualizacion_id = usuario_id_modifica
+
+                mensaje = 'Usuario actualizado exitosamente'
+
+            else:
+                # CREACIÓN
+                persona = Persona(
+                    nombres=persona_data.get('nombres'),
+                    apellidos=persona_data.get('apellidos'),
+                    num_contacto=persona_data.get('num_contacto'),
+                    correo=persona_data.get('correo'),
+                    dni=persona_data.get('dni'),
+                    direccion=persona_data.get('direccion')
+                )
+                db.session.add(persona)
+                db.session.flush()
+
+                usu_nom = f"{persona.nombres.strip()[0].lower()}{persona.apellidos.replace(' ', '').lower()}"
+                hashed_password = generate_password_hash(password)
+
+                usuario = Usuario(
+                    usu_nom=usu_nom,
+                    usu_pass=hashed_password,
+                    persona_id=persona.persona_id,
+                    usuario_tipo_id=usuario_tipo.get('id'),
+                    fecha_creacion=datetime.now(),
+                    usuario_creacion_id=data.get('usuario_creacion_id')
+                )
+                db.session.add(usuario)
+                mensaje = 'Usuario creado exitosamente'
+
             db.session.commit()
 
             return jsonify({
-                'response_code': 201,
-                'message': 'Usuario creado exitosamente',
+                'response_code': 200,
+                'message': mensaje,
                 'usuario': {
                     'usuario_id': usuario.usuario_id,
                     'usuario_nombre': usuario.usu_nom,
                     'persona_id': persona.persona_id
                 }
-            }), 201
+            }), 200
 
         except Exception as e:
             db.session.rollback()
@@ -100,6 +133,7 @@ class UsuarioService:
                 'response_code': 500,
                 'message': f'Error al guardar usuario: {str(e)}'
             }), 500
+
     
     @staticmethod
     def listar_usuario_by_id(usuario_id):
