@@ -13,3 +13,9 @@ def obtener_autores():
 def guardar_autor():
     data = request.get_json()
     return AutorService.guardar_autor(data)
+
+@autor_bp.route(f'{main_root}/eliminar/<int:autor_id>', methods=['PUT'])
+def eliminar_autor(autor_id):
+    data = request.get_json()
+    usuario_autor_id = data.get('usuario_modificacion_id')
+    return AutorService.eliminar_autor(autor_id, usuario_autor_id)

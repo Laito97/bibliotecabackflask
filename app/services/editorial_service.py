@@ -80,3 +80,39 @@ class EditorialService:
                 'response_code': 500,
                 'message': f'Error al guardar o editar editorial: {str(e)}'
             }), 500
+
+    @staticmethod
+    def eliminar_autor(editorial_id, usuario_modificacion_id):
+
+        if not usuario_modificacion_id:
+            return jsonify({
+                'response_code': 400,
+                'message': 'Falta el id del usuario que realiza la modificación.'
+            }), 400
+
+        try:
+            editorial = Editorial.query.get(editorial_id)
+
+            if not editorial:
+                return jsonify({
+                    'response_code': 404,
+                    'message': 'Editorial no encontrado'
+                }), 404
+
+            editorial.estado_id = 2 
+            editorial.fecha_actualizacion = datetime.now()
+            editorial.usuario_actualizacion_id = usuario_modificacion_id
+
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Autor eliminado (inactivado) exitosamente'
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al eliminar autor: {str(e)}'
+            }), 500

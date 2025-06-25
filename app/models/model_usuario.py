@@ -9,10 +9,12 @@ class Usuario(db.Model):
     usuario_id = db.Column(db.Integer, primary_key=True)
     usu_nom = db.Column(db.String(50))
     usu_pass = db.Column(db.String(50))
+    fecha_creacion = db.Column(db.Datetime)
     
     persona_id = db.Column(db.Integer, db.ForeignKey('persona.persona_id'))
     usuario_tipo_id = db.Column(db.Integer, db.ForeignKey('usuarios_tipo.usuario_tipo_id'))
     estado_id = db.Column(db.Integer, db.ForeignKey('estado.estado_id'))
+
 
     # Relaciones
     persona = db.relationship('Persona', back_populates='usuario', uselist=False)

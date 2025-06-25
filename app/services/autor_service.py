@@ -80,3 +80,40 @@ class AutorService:
                 'response_code': 500,
                 'message': f'Error al guardar autor: {str(e)}'
             }), 500
+        
+    
+    @staticmethod
+    def eliminar_autor(autor_id, usuario_modificacion_id):
+
+        if not usuario_modificacion_id:
+            return jsonify({
+                'response_code': 400,
+                'message': 'Falta el id del usuario que realiza la modificación.'
+            }), 400
+
+        try:
+            autor = Autor.query.get(autor_id)
+
+            if not autor:
+                return jsonify({
+                    'response_code': 404,
+                    'message': 'Autor no encontrado'
+                }), 404
+
+            autor.estado_id = 2 
+            autor.fecha_actualizacion = datetime.now()
+            autor.usuario_actualizacion_id = usuario_modificacion_id
+
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Autor eliminado (inactivado) exitosamente'
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al eliminar autor: {str(e)}'
+            }), 500

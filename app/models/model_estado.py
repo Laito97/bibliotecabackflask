@@ -7,3 +7,4 @@ class Estado(db.Model):
     descripcion = db.Column(db.String(20))
 
     usuario = db.relationship('Usuario', back_populates='estado')
+    autor = db.relationship('Autor', back_populates='estado')

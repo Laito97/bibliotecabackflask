@@ -13,3 +13,9 @@ def obtener_editoriales():
 def guardar_o_editar_editorial():
     data = request.get_json()
     return EditorialService.guardar_editar_editorial(data)
+
+@editorial_bp.route(f'{main_root}/eliminar/<int:autor_id>', methods=['PUT'])
+def eliminar_editorial(editorial_id):
+    data = request.get_json()
+    usuario_autor_id = data.get('usuario_modificacion_id')
+    return EditorialService.eliminar_editorial(editorial_id, usuario_autor_id)
