@@ -11,12 +11,14 @@ class UsuarioService:
     @staticmethod
     def listar_usuarios():
         try:
-            usuarios = Usuario.query.all()
+            usuarios = Usuario.query.filter_by(estado_id=1).all()
             usuarios_data = []
 
             for usuario in usuarios:
                 persona = usuario.persona
+                estado = usuario.estado
                 usuario_tipo = usuario.usuario_tipo
+                estado = usuario.estado
 
                 usuarios_data.append({
                     'usuario_id': usuario.usuario_id,
@@ -33,6 +35,10 @@ class UsuarioService:
                         'correo': persona.correo if persona else None,
                         'num_contacto': persona.num_contacto if persona else None,
                         'direccion': persona.direccion if persona else None
+                    },
+                    'estado': {
+                        'estado_id': estado.estado_id,
+                        'descripcion': estado.descripcion
                     }
                 })
 
@@ -148,6 +154,7 @@ class UsuarioService:
 
             persona = usuario.persona
             usuario_tipo = usuario.usuario_tipo
+            estado = usuario.estado
 
             usuario_data = {
                 'usuario_id': usuario.usuario_id,
@@ -164,6 +171,10 @@ class UsuarioService:
                     'correo': persona.correo if persona else None,
                     'num_contacto': persona.num_contacto if persona else None,
                     'direccion': persona.direccion if persona else None
+                },
+                'estado': {
+                    'estado_id': estado.estado_id,
+                    'descripcion': estado.descripcion
                 }
             }
 
@@ -205,4 +216,40 @@ class UsuarioService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al listar usuarios: {str(e)}'
+            }), 500
+        
+    @staticmethod
+    def eliminar_usuario(usuario_id, usuario_modificacion_id):
+
+        if not usuario_modificacion_id:
+            return jsonify({
+                'response_code': 400,
+                'message': 'Falta el id del usuario que realiza la modificación.'
+            }), 400
+
+        try:
+            usuario = Usuario.query.get(usuario_id)
+
+            if not usuario:
+                return jsonify({
+                    'response_code': 404,
+                    'message': 'Usuario no encontrado'
+                }), 404
+
+            usuario.estado_id = 2 
+            usuario.fecha_actualizacion = datetime.now()
+            usuario.usuario_actualizacion_id = usuario_modificacion_id
+
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Usuario eliminado (inactivado) exitosamente'
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al eliminar usuario: {str(e)}'
             }), 500

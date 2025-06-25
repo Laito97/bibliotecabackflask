@@ -21,3 +21,9 @@ def obtener_usuario_por_id(usuario_id):
 @usuario_bp.route(f'{main_root}/list-tipo', methods=['GET'])
 def obtener_usuario_tipo():
     return UsuarioService.listar_usuario_tipo()
+
+@usuario_bp.route(f'{main_root}/eliminar/<int:usuario_id>', methods=['PUT'])
+def eliminar_usuario(usuario_id):
+    data = request.get_json()
+    usuario_modificacion_id = data.get('usuario_modificacion_id')
+    return UsuarioService.eliminar_usuario(usuario_id, usuario_modificacion_id)

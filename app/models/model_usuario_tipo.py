@@ -7,5 +7,5 @@ class UsuarioTipo(db.Model):
     tipo_nom = db.Column(db.String(100))
 
     # Relación inversa
-    usuarios = db.relationship('Usuario', back_populates='usuario_tipo')
+    usuario = db.relationship('Usuario', back_populates='usuario_tipo')
 
