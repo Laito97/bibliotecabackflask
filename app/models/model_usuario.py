@@ -10,7 +10,10 @@ class Usuario(db.Model):
     usu_nom = db.Column(db.String(50))
     usu_pass = db.Column(db.String(50))
     fecha_creacion = db.Column(db.DateTime)
-    
+    fecha_actualizacion = db.Column(db.DateTime)
+    usuario_creacion_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'))
+    usuario_actualizacion_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'))
+
     persona_id = db.Column(db.Integer, db.ForeignKey('persona.persona_id'))
     usuario_tipo_id = db.Column(db.Integer, db.ForeignKey('usuarios_tipo.usuario_tipo_id'))
     estado_id = db.Column(db.Integer, db.ForeignKey('estado.estado_id'))
@@ -20,4 +23,6 @@ class Usuario(db.Model):
     persona = db.relationship('Persona', back_populates='usuario', uselist=False)
     usuario_tipo = db.relationship('UsuarioTipo', back_populates='usuario', uselist=False)
     estado = db.relationship('Estado', back_populates='usuario', uselist=False)
+    usuario_creacion = db.relationship('Usuario', foreign_keys=[usuario_creacion_id])
+    usuario_actualizacion = db.relationship('Usuario', foreign_keys=[usuario_actualizacion_id])
 

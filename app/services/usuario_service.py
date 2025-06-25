@@ -61,7 +61,7 @@ class UsuarioService:
             persona_data = data.get('persona')
             password = data.get('password')
             usuario_tipo = data.get('usuario_tipo_id')
-            usuario_id_modifica = data.get('usuario_modificacion_id')
+            usuario_id_modifica = data.get('usuario_actualizacion_id')
 
             if not persona_data or not usuario_tipo:
                 return jsonify({
@@ -116,7 +116,8 @@ class UsuarioService:
                     persona_id=persona.persona_id,
                     usuario_tipo_id=usuario_tipo.get('id'),
                     fecha_creacion=datetime.now(),
-                    usuario_creacion_id=data.get('usuario_creacion_id')
+                    usuario_creacion_id=data.get('usuario_creacion_id'),
+                    estado_id = 1
                 )
                 db.session.add(usuario)
                 mensaje = 'Usuario creado exitosamente'
@@ -219,9 +220,9 @@ class UsuarioService:
             }), 500
         
     @staticmethod
-    def eliminar_usuario(usuario_id, usuario_modificacion_id):
+    def eliminar_usuario(usuario_id, usuario_actualizacion_id):
 
-        if not usuario_modificacion_id:
+        if not usuario_actualizacion_id:
             return jsonify({
                 'response_code': 400,
                 'message': 'Falta el id del usuario que realiza la modificación.'
@@ -229,7 +230,10 @@ class UsuarioService:
 
         try:
             usuario = Usuario.query.get(usuario_id)
-
+            persona = usuario.persona
+            usuario_tipo = usuario.usuario_tipo
+            estado = usuario.estado
+            
             if not usuario:
                 return jsonify({
                     'response_code': 404,
@@ -238,13 +242,35 @@ class UsuarioService:
 
             usuario.estado_id = 2 
             usuario.fecha_actualizacion = datetime.now()
-            usuario.usuario_actualizacion_id = usuario_modificacion_id
+            usuario.usuario_actualizacion_id = usuario_actualizacion_id
 
+            usuario_data = {
+                'usuario_id': usuario.usuario_id,
+                'usuario_nombre': usuario.usu_nom,
+                'usuario_tipo': {
+                    'usuario_tipo_id': usuario_tipo.usuario_tipo_id if usuario_tipo else None,
+                    'tipo_nom': usuario_tipo.tipo_nom if usuario_tipo else None,
+                },
+                'persona': {
+                    'persona_id': persona.persona_id if persona else None,
+                    'nombres': persona.nombres if persona else None,
+                    'apellidos': persona.apellidos if persona else None,
+                    'dni': persona.dni if persona else None,
+                    'correo': persona.correo if persona else None,
+                    'num_contacto': persona.num_contacto if persona else None,
+                    'direccion': persona.direccion if persona else None
+                },
+                'estado': {
+                    'estado_id': estado.estado_id,
+                    'descripcion': estado.descripcion
+                }
+            }
             db.session.commit()
 
             return jsonify({
                 'response_code': 200,
-                'message': 'Usuario eliminado (inactivado) exitosamente'
+                'message': 'Usuario eliminado (inactivado) exitosamente',
+                'usuario': usuario_data
             }), 200
 
         except Exception as e:
