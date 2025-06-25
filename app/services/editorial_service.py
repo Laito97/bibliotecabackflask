@@ -1,6 +1,7 @@
 from app.models.model_editorial import Editorial
 from flask import jsonify
 from app.database import db
+from datetime import datetime
 
 
 class EditorialService:
