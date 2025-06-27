@@ -83,7 +83,7 @@ class EditorialService:
             }), 500
 
     @staticmethod
-    def eliminar_autor(editorial_id, usuario_modificacion_id):
+    def eliminar_editorial(editorial_id, usuario_modificacion_id):
 
         if not usuario_modificacion_id:
             return jsonify({
@@ -108,12 +108,12 @@ class EditorialService:
 
             return jsonify({
                 'response_code': 200,
-                'message': 'Autor eliminado (inactivado) exitosamente'
+                'message': 'Editorial eliminada exitosamente'
             }), 200
 
         except Exception as e:
             db.session.rollback()
             return jsonify({
                 'response_code': 500,
-                'message': f'Error al eliminar autor: {str(e)}'
+                'message': f'Error al eliminar editorial: {str(e)}'
             }), 500

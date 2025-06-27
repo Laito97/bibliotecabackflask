@@ -105,3 +105,39 @@ class PrestamoService:
                 'response_code': 500,
                 'message': f'Error al guardar/editar préstamo: {str(e)}'
             }), 500
+        
+    @staticmethod
+    def eliminar_prestamo(prestamo_id, usuario_modificacion_id):
+
+        if not usuario_modificacion_id:
+            return jsonify({
+                'response_code': 400,
+                'message': 'Falta el id del usuario que realiza la modificación.'
+            }), 400
+
+        try:
+            prestamo = Prestamo.query.get(prestamo_id)
+
+            if not prestamo:
+                return jsonify({
+                    'response_code': 404,
+                    'message': 'Prestamo no encontrado'
+                }), 404
+
+            prestamo.estado_id = 2 
+            prestamo.fecha_actualizacion = datetime.now()
+            prestamo.usuario_actualizacion_id = usuario_modificacion_id
+
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Prestamo eliminado exitosamente'
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al eliminar prestamo: {str(e)}'
+            }), 500

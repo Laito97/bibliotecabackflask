@@ -127,3 +127,39 @@ class LibroService:
                 'response_code': 500,
                 'message': f'Error al guardar o editar libro: {str(e)}'
             }), 500
+
+    @staticmethod
+    def eliminar_libro(libro_id, usuario_modificacion_id):
+
+        if not usuario_modificacion_id:
+            return jsonify({
+                'response_code': 400,
+                'message': 'Falta el id del usuario que realiza la modificación.'
+            }), 400
+
+        try:
+            libro = Libro.query.get(libro_id)
+
+            if not libro:
+                return jsonify({
+                    'response_code': 404,
+                    'message': 'Libro no encontrado'
+                }), 404
+
+            libro.estado_id = 2 
+            libro.fecha_actualizacion = datetime.now()
+            libro.usuario_actualizacion_id = usuario_modificacion_id
+
+            db.session.commit()
+
+            return jsonify({
+                'response_code': 200,
+                'message': 'Libro eliminado exitosamente'
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({
+                'response_code': 500,
+                'message': f'Error al eliminar libro: {str(e)}'
+            }), 500

@@ -18,6 +18,7 @@ class Libro(db.Model):
     usuario_creacion_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'))
     fecha_actualizacion = db.Column(db.DateTime)
     usuario_actualizacion_id = db.Column(db.Integer, db.ForeignKey('usuarios.usuario_id'))
+    estado_id = db.Column(db.Integer, db.ForeignKey('estado.estado_id'))
 
     # Relaciones
     categoria = db.relationship('Categoria', backref='libros')
@@ -25,3 +26,4 @@ class Libro(db.Model):
     autor = db.relationship('Autor', backref='libros')
     usuario_creacion = db.relationship('Usuario', foreign_keys=[usuario_creacion_id])
     usuario_actualizacion = db.relationship('Usuario', foreign_keys=[usuario_actualizacion_id])
+    estado = db.relationship('Estado', foreign_keys=[estado_id])
