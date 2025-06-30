@@ -26,4 +26,8 @@ class Libro(db.Model):
     autor = db.relationship('Autor', backref='libros')
     usuario_creacion = db.relationship('Usuario', foreign_keys=[usuario_creacion_id])
     usuario_actualizacion = db.relationship('Usuario', foreign_keys=[usuario_actualizacion_id])
+<<<<<<< HEAD
     estado = db.relationship('Estado', foreign_keys=[estado_id])
+=======
+    estado = db.relationship('Estado', foreign_keys=[estado_id])
+>>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c

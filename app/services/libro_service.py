@@ -127,7 +127,11 @@ class LibroService:
                 'response_code': 500,
                 'message': f'Error al guardar o editar libro: {str(e)}'
             }), 500
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c
     @staticmethod
     def eliminar_libro(libro_id, usuario_modificacion_id):
 
@@ -162,5 +166,9 @@ class LibroService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al eliminar libro: {str(e)}'
+<<<<<<< HEAD
             }), 500
 
+=======
+            }), 500
+>>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c

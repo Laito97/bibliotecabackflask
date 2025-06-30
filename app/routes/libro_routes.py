@@ -13,6 +13,10 @@ def obtener_libros():
 def guardar_o_editar_libro():
     data = request.get_json()
     return LibroService.guardar_editar_libro(data)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c
 @libro_bp.route(f'{main_root}/eliminar/<int:libro_id>', methods=['PUT'])
 def eliminar_libro(libro_id):
     data = request.get_json()

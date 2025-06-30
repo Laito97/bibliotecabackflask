@@ -11,3 +11,7 @@ class Editorial(db.Model):
 
     estado = db.relationship('Estado', foreign_keys=[estado_id])
     usuario_actualizacion = db.relationship('Usuario', foreign_keys=[usuario_actualizacion_id])
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c

@@ -22,7 +22,7 @@ def guardar_usuario():
 def obtener_usuario_tipo():
     return UsuarioService.listar_usuario_tipo()
 
-@usuario_bp.route(f'{main_root}/eliminar/<int:usuario_id>', methods=['put'])
+@usuario_bp.route(f'{main_root}/eliminar/<int:usuario_id>', methods=['PUT'])
 def eliminar_usuario(usuario_id):
     data = request.get_json()
     usuario_modificacion_id = data.get('usuario_actualizacion_id')
