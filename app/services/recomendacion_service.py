@@ -6,6 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 class RecomendacionService:
 
+
     @staticmethod
     def recomendar_libros(id_usuario, top_n=5):
         try:
