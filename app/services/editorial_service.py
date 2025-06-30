@@ -9,7 +9,7 @@ class EditorialService:
     @staticmethod
     def listar_editoriales():
         try:
-            editoriales = Editorial.query.all()
+            editoriales = Editorial.query.filter_by(estado_id=1).all()
             editoriales_data = []
 
             for editorial in editoriales:

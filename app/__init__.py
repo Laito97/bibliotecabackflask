@@ -12,7 +12,7 @@ from app.routes.libro_routes import libro_bp
 from app.routes.prestamo_routes import prestamo_bp
 from app.routes.estado_prestamos_routes import estado_prestamos_bp
 #from app.routes.recomendacion_ml_routes import recomendaciones_bp
-
+from app.routes.test_routes import test_bp
 jwt = JWTManager()
 prefix = '/api/biblioteca_v1'
 
@@ -33,6 +33,7 @@ def create_app():
     app.register_blueprint(libro_bp, url_prefix=prefix)
     app.register_blueprint(prestamo_bp, url_prefix=prefix)
     app.register_blueprint(estado_prestamos_bp, url_prefix=prefix)
+    app.register_blueprint(test_bp, url_prefix=prefix)
    # app.register_blueprint(recomendaciones_bp, url_prefix=prefix)
 
     return app
