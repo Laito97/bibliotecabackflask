@@ -9,3 +9,4 @@ main_root = '/prestamo-estado'
 def obtener_estados():
     return PrestamoEstadoService.listar_estados_prestamo()
 
+
