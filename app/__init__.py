@@ -33,7 +33,7 @@ def create_app():
     app.register_blueprint(libro_bp, url_prefix=prefix)
     app.register_blueprint(prestamo_bp, url_prefix=prefix)
     app.register_blueprint(estado_prestamos_bp, url_prefix=prefix)
-   # app.register_blueprint(test_bp, url_prefix=prefix)
+    app.register_blueprint(test_bp, url_prefix=prefix)
    # app.register_blueprint(recomendaciones_bp, url_prefix=prefix)
 
     return app

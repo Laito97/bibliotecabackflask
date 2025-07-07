@@ -1,13 +1,13 @@
-#from flask import Blueprint, jsonify, request
-# import tensorflow as tf
-# import numpy as np
-# from app.services.recomendacion_service import RecomendacionService
-# from app.models.model_libro import Libro
-# from app.services.libro_service import LibroService
-# import pandas as pd
+from flask import Blueprint, jsonify, request
+import tensorflow as tf
+import numpy as np
+from app.services.recomendacion_service import RecomendacionService
+from app.models.model_libro import Libro
+from app.services.libro_service import LibroService
+import pandas as pd
 
-# test_bp = Blueprint("test_bp", __name__)
-# main_root = '/test'
+test_bp = Blueprint("test_bp", __name__)
+main_root = '/test'
 
 # modelo = tf.keras.models.load_model('E:\\nueva version\\biblioteca-backend-flask\\modelo_temperatura.h5')
 # modelo_recomendacion  = tf.keras.models.load_model('E:\\nueva version\\biblioteca-backend-flask\\modelo_temperatura.h5')
@@ -48,25 +48,25 @@
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
     
-# @test_bp.route(f'{main_root}/recomendar', methods=['POST'])
-# def recomendar():
-#     try:
-#         data = request.get_json()
-#         id_usuario = data.get('id_usuario')
+@test_bp.route(f'{main_root}/recomendar', methods=['POST'])
+def recomendar():
+    try:
+        data = request.get_json()
+        id_usuario = data.get('id_usuario')
 
-#         if not id_usuario:
-#             return jsonify({'response_code': 400, 'message': 'Se requiere id_usuario'}), 400
+        if not id_usuario:
+            return jsonify({'response_code': 400, 'message': 'Se requiere id_usuario'}), 400
 
-#         resultado = RecomendacionService.recomendar_libros(id_usuario)
+        resultado = RecomendacionService.recomendar_libros(id_usuario)
 
-#         return jsonify({
-#             'response_code': 200,
-#             'message': resultado.get('mensaje', ''),
-#             'recomendaciones': resultado.get('recomendaciones', [])
-#         }), 200
+        return jsonify({
+            'response_code': 200,
+            'message': resultado.get('mensaje', ''),
+            'recomendaciones': resultado.get('recomendaciones', [])
+        }), 200
 
-#     except Exception as e:
-#         return jsonify({'response_code': 500, 'message': f'Error: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'response_code': 500, 'message': f'Error: {str(e)}'}), 500
 
 
 # @test_bp.route(f'{main_root}/recomendar2', methods=['POST'])
