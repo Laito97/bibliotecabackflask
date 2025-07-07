@@ -4,7 +4,6 @@ import numpy as np
 from app.services.recomendacion_service import RecomendacionService
 from app.models.model_libro import Libro
 from app.services.libro_service import LibroService
-import pandas as pd
 
 test_bp = Blueprint("test_bp", __name__)
 main_root = '/test'
