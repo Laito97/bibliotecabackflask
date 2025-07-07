@@ -1,6 +1,4 @@
 from flask import Blueprint, jsonify, request
-import tensorflow as tf
-import numpy as np
 from app.services.recomendacion_service import RecomendacionService
 from app.models.model_libro import Libro
 from app.services.libro_service import LibroService
