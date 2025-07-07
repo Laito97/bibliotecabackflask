@@ -67,6 +67,10 @@ def recomendar():
 
     except Exception as e:
         return jsonify({'response_code': 500, 'message': f'Error: {str(e)}'}), 500
+    
+@test_bp.route(f'{main_root}/return-hola', methods=['GET'])
+def prueba_routes():
+    return "Hola OK"
 
 
 # @test_bp.route(f'{main_root}/recomendar2', methods=['POST'])
