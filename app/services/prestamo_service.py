@@ -105,10 +105,7 @@ class PrestamoService:
                 'response_code': 500,
                 'message': f'Error al guardar/editar préstamo: {str(e)}'
             }), 500
-<<<<<<< HEAD
-=======
         
->>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c
     @staticmethod
     def eliminar_prestamo(prestamo_id, usuario_modificacion_id):
 
