@@ -9,8 +9,8 @@ import pandas as pd
 test_bp = Blueprint("test_bp", __name__)
 main_root = '/test'
 
-modelo = tf.keras.models.load_model('C:\\proyectolaito\\bibliotecabackflask\\modelo_temperatura.h5')
-modelo_recomendacion  = tf.keras.models.load_model('C:\\proyectolaito\\bibliotecabackflask\\modelo_temperatura.h5')
+modelo = tf.keras.models.load_model('E:\\nueva version\\biblioteca-backend-flask\\modelo_temperatura.h5')
+modelo_recomendacion  = tf.keras.models.load_model('E:\\nueva version\\biblioteca-backend-flask\\modelo_temperatura.h5')
 print("Modelo cargado desde modelo tal")
 
 @test_bp.route(f'{main_root}', methods=['GET'])
