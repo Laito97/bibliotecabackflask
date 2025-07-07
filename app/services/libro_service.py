@@ -8,7 +8,7 @@ class LibroService:
     @staticmethod
     def listar_libros():
         try:
-            libros = Libro.query.all()
+            libros = Libro.query.filter_by(estado_id=1).all()
             libros_data = []
 
             for libro in libros:
@@ -127,11 +127,7 @@ class LibroService:
                 'response_code': 500,
                 'message': f'Error al guardar o editar libro: {str(e)}'
             }), 500
-<<<<<<< HEAD
         
-=======
-
->>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c
     @staticmethod
     def eliminar_libro(libro_id, usuario_modificacion_id):
 
@@ -166,9 +162,35 @@ class LibroService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al eliminar libro: {str(e)}'
-<<<<<<< HEAD
-            }), 500
 
-=======
             }), 500
->>>>>>> 9525f9dd2aaa0e57a4e2a6e28fc3e263e20ee57c
+        
+
+    @staticmethod
+    def formatear_libro(libro):
+        return {
+            'libro_id': libro.libro_id,
+            'isbn': libro.isbn,
+            'url_portada': libro.url_portada,
+            'libro_nom': libro.libro_nom,
+            'descripcion': libro.descripcion,
+            'anio_publicacion': libro.anio_publicacion,
+            'edicion': libro.edicion,
+            'existencias': libro.existencias,
+            'categoria': {
+                'categoria_id': libro.categoria.categoria_id if libro.categoria else None,
+                'categoria_nom': libro.categoria.categoria_nom if libro.categoria else None
+            },
+            'editorial': {
+                'editorial_id': libro.editorial.editorial_id if libro.editorial else None,
+                'editorial_nom': libro.editorial.editorial_nom if libro.editorial else None
+            },
+            'autor': {
+                'autor_id': libro.autor.autor_id if libro.autor else None,
+                'autor_nom': libro.autor.autor_nom if libro.autor else None
+            },
+            'usuario_creacion_id': libro.usuario_creacion_id,
+            'usuario_actualizacion_id': libro.usuario_actualizacion_id,
+            'fecha_creacion': libro.fecha_creacion,
+            'fecha_actualizacion': libro.fecha_actualizacion
+        }
