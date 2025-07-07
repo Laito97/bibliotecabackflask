@@ -8,7 +8,7 @@ class AutorService:
     @staticmethod
     def listar_autores():
         try:
-            autores = Autor.query.all()
+            autores = Autor.query.filter_by(estado_id=1).all()
             autores_data = []
 
             for autor in autores:

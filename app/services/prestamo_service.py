@@ -9,7 +9,7 @@ class PrestamoService:
     @staticmethod
     def listar_prestamos():
         try:
-            prestamos = Prestamo.query.all()
+            prestamos = Prestamo.query.filter_by(estado_id=1).all()
             prestamos_data = []
 
             for prestamo in prestamos:
