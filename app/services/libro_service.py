@@ -162,7 +162,6 @@ class LibroService:
             return jsonify({
                 'response_code': 500,
                 'message': f'Error al eliminar libro: {str(e)}'
-
             }), 500
         
 
